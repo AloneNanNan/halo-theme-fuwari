@@ -1,5 +1,6 @@
 ---
 import Categories from "./Categories.astro";
+import Hitokoto from "./Hitokoto.astro";
 import MusicPlayer from "./MusicPlayer.astro";
 import Profile from "./Profile.astro";
 import Tags from "./Tags.astro";
@@ -35,6 +36,9 @@ const className = Astro.props.class;
             class="onload-animation"
             th:style="|animation-delay: calc(var(--content-delay) + ${widgetStat.index * 50}ms)|"
           />
+        </div>
+        <div class="contents" th:case="'hitokoto'">
+          <Hitokoto class="onload-animation" />
         </div>
         <div
           th:case="'html'"

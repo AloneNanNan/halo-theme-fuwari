@@ -83,7 +83,7 @@ spec:
           name: menu
           label: 菜单
           value: ""
-          help: "选择菜单(仅支持一级菜单)"
+          help: "选择菜单"
     - group: style
       label: 样式
       formSchema:
@@ -126,6 +126,8 @@ spec:
                   value: tag
                 - label: 音乐播放器
                   value: music
+                - label: 一言
+                  value: hitokoto
                 - label: 自定义HTML
                   value: html
             - $formkit: text
@@ -329,3 +331,72 @@ spec:
           name: gongan_link
           label: 公安联网备案跳转链接
           value: https://beian.mps.gov.cn/#/query/webSearch
+
+    - group: links
+      label: 友链设置
+      formSchema:
+        - $formkit: switch
+          name: enable_apply_btn
+          value: true
+          label: 显示申请友链按钮
+        - $formkit: switch
+          name: enable_owner_info
+          value: true
+          label: 显示个人博客信息
+        - $formkit: switch
+          name: expand_owner_info
+          value: true
+          label: 默认展开个人博客信息
+        - $formkit: text
+          name: owner_avatar
+          label: 博客头像
+          value: https://example.com/avatar.jpg
+          help: "博客头像图片地址"
+        - $formkit: text
+          name: owner_name
+          label: 博客名称
+          value: 博客名称
+          help: "博客名称"
+        - $formkit: textarea
+          name: owner_description
+          label: 博客描述
+          value: 这是一个基于 Halo 搭建的个人博客
+          help: "博客简短描述"
+        - $formkit: text
+          name: owner_url
+          label: 博客网址
+          value: https://example.com
+          help: "博客首页地址"
+        - $formkit: text
+          name: owner_rss
+          label: RSS 地址
+          value: https://example.com/rss.xml
+          help: "博客 RSS 订阅地址"
+        - $formkit: switch
+          name: enable_requirements
+          value: true
+          label: 显示友链须知
+        - $formkit: textarea
+          name: requirements
+          value: |
+            请点击下方的申请友链提交网站信息
+            网站能够正常访问，访问速度正常
+            将本站添加为贵站的友情链接
+            网站为个人类型，非采集站，站点符合国家相关法律法规，不涉及违法行为
+            提交友链信息后我会尽快审核贵站链接
+          label: 友链须知内容
+          help: "显示在折叠面板中的友链须知"
+        - $formkit: switch
+          name: enable_disclaimer
+          value: true
+          label: 显示免责申明
+        - $formkit: textarea
+          name: disclaimer
+          value: |
+            本博客严格遵守中华人民共和国法律法规，友情链接及其他外链，仅为了方便学习与交流而收集整理
+            本人能力有限，无法逐一甄别每篇文章的全部内容，也无法实时跟进并确认原作者后续是否对链接内容进行篡改，包括但不限于发布违法信息、植入恶意代码、诱导点击或破坏用户计算机等行为
+            部分友链网站可能未完成工信部备案或域名实名认证，因此其安全性、稳定性及内容合法性均无法保证
+            请您在点击访问前自行审慎判断，并承担相应风险，本博客不对因跳转第三方网站而产生的任何直接或间接损失承担责任
+            如您在实际访问中遇到不良内容或遭受损失，深表歉意，请及时通过本博客提供的联系方式与博主沟通处理，博主将立即移除相关链接
+          label: 免责申明内容
+          help: "显示在折叠面板中的免责声明"

@@ -4,24 +4,91 @@
   class="float-panel float-panel-closed fixed right-4 px-2 py-2 transition-all"
 >
   <div class="contents" th:if="${menu != null}">
-    <a
-      th:each="menuItem : ${menu.menuItems}"
-      th:href="@{${menuItem.status.href}}"
-      th:target="${menuItem.spec.target?.value}"
-      class="group flex items-center justify-between gap-8 rounded-lg py-2 pl-3 pr-1 transition hover:bg-(--btn-plain-bg-hover) active:bg-(--btn-plain-bg-active)"
-    >
-      <span
-        class="font-bold text-black/75 transition group-hover:text-(--primary) group-active:text-(--primary) dark:text-white/75"
-        th:text="${menuItem.status.displayName}">Menu</span
+    <div th:each="menuItem, itemStat : ${menu.menuItems}">
+      <div class="flex items-center">
+        <a
+          th:href="@{${menuItem.status.href}}"
+          th:target="${menuItem.spec.target?.value}"
+          class="group flex-1 flex items-center justify-between gap-8 rounded-lg py-2 pl-3 pr-1 transition hover:bg-(--btn-plain-bg-hover) active:bg-(--btn-plain-bg-active)"
+        >
+          <span
+            class="font-bold text-black/75 transition group-hover:text-(--primary) group-active:text-(--primary) dark:text-white/75"
+            th:text="${menuItem.status.displayName}">Menu</span
+          >
+          <span
+            th:if="${menuItem.spec.target?.value == '_blank'}"
+            class="icon-[fa6-solid--arrow-up-right-from-square] ml-1 text-[0.9rem] text-black/50 dark:text-white/50"
+          ></span>
+        </a>
+        <!-- 子菜单展开按钮 -->
+        <button
+          th:if="${menuItem.children != null && !menuItem.children.isEmpty()}"
+          type="button"
+          th:onclick="|event.stopPropagation(); toggleSubmenu(this, 'submenu-' + ${itemStat.index});|"
+          class="px-2 py-2 submenu-toggle"
+        >
+          <span class="icon-[material-symbols--chevron-right-rounded] ml-1 -translate-y-px text-[1.3rem] text-black/20 transition-transform duration-200 dark:text-white/20 inline-block"></span>
+        </button>
+      </div>
+      <!-- 子菜单内容 -->
+      <div
+        th:if="${menuItem.children != null && !menuItem.children.isEmpty()}"
+        th:id="'submenu-' + ${itemStat.index}"
+        class="hidden pl-4"
       >
-      <span
-        th:if="${menuItem.spec.target?.value == '_blank'}"
-        class="icon-[tabler--external-link] ml-1 -translate-y-px text-[1.3rem] text-black/20 transition dark:text-white/20"
-      ></span>
-      <span
-        th:unless="${menuItem.spec.target?.value == '_blank'}"
-        class="icon-[material-symbols--chevron-right-rounded] ml-1 -translate-y-px text-[1.3rem] text-black/20 transition dark:text-white/20"
-      ></span>
-    </a>
+        <a
+          th:each="childItem : ${menuItem.children}"
+          th:href="@{${childItem.status.href}}"
+          th:target="${childItem.spec.target?.value}"
+          class="group flex items-center justify-between gap-8 rounded-lg py-2 pl-3 pr-1 transition hover:bg-(--btn-plain-bg-hover) active:bg-(--btn-plain-bg-active)"
+        >
+          <span
+            class="font-bold text-black/75 transition group-hover:text-(--primary) group-active:text-(--primary) dark:text-white/75"
+            th:text="${childItem.status.displayName}">子菜单</span
+          >
+          <span
+            th:if="${childItem.spec.target?.value == '_blank'}"
+            class="icon-[fa6-solid--arrow-up-right-from-square] ml-1 text-[0.9rem] text-black/50 dark:text-white/50"
+          ></span>
+        </a>
+      </div>
+    </div>
   </div>
 </div>
+
+<script is:inline>
+  // 切换子菜单显示/隐藏 - 附加到 window 确保全局可访问
+  window.toggleSubmenu = function(buttonEl, submenuId) {
+    const submenu = document.getElementById(submenuId);
+    const arrow = buttonEl.querySelector('span');
+    if (submenu) {
+      submenu.classList.toggle('hidden');
+      if (arrow) {
+        arrow.classList.toggle('rotate-90');
+      }
+    }
+  };
+  
+  // 页面加载和 Swup 切换后重新绑定事件
+  function initNavMenuPanel() {
+    const panel = document.getElementById('nav-menu-panel');
+    if (!panel) return;
+    
+    // 为所有菜单链接添加点击事件，点击后关闭面板
+    panel.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', function() {
+        panel.classList.add('float-panel-closed');
+      });
+    });
+  }
+  
+  // 初始加载时初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavMenuPanel);
+  } else {
+    initNavMenuPanel();
+  }
+  
+  // Swup 页面切换后重新初始化
+  document.addEventListener('swup:contentReplaced', initNavMenuPanel);
+</script>

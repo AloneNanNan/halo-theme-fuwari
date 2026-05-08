@@ -7,6 +7,7 @@ export interface ThemeConfig {
   profile: Profile;
   post: Post;
   beian: Beian;
+  links: Links;
   development: Development;
 }
 
@@ -96,6 +97,21 @@ export interface Beian {
 
 export interface Development {
   enabled: boolean;
+}
+
+export interface Links {
+  enable_apply_btn: boolean;
+  enable_owner_info: boolean;
+  expand_owner_info: boolean;
+  owner_avatar: string;
+  owner_name: string;
+  owner_description: string;
+  owner_url: string;
+  owner_rss: string;
+  enable_requirements: boolean;
+  requirements: string;
+  enable_disclaimer: boolean;
+  disclaimer: string;
 }
 
 export type LIGHT_DARK_MODE =
