@@ -18,13 +18,12 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
         transform: translateY(-50%);
         width: 5px;
         height: 5px;
-      }
-      .collapse-icon.is-expanded {
-        transform: rotate(180deg) !important;
-      }
         border-radius: 50%;
         background-color: currentColor;
         opacity: 0.4;
+      }
+      .collapse-icon.is-expanded {
+        transform: rotate(180deg);
       }
     </style>
   </Fragment>
@@ -357,8 +356,6 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
           if (icon) {
             icon.classList.add('is-expanded');
           }
-          // 初始化当前面板内的复制按钮
-          initCopyButtonsInPanel(content);
         }
       }
     });
@@ -366,149 +363,74 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
     // 复制功能
     document.addEventListener('click', function(e) {
       var btn = e.target.closest('.copy-btn');
-      if (!btn || btn.dataset.copyBound) return;
-      
-      btn.dataset.copyBound = 'true';
-      btn.addEventListener('click', handleCopy);
-    });
+      if (!btn) return;
 
-    // 页面加载时，初始化默认展开的面板的复制按钮
-    var defaultExpanded = document.querySelector('.collapse-content:not(.hidden)');
-    if (defaultExpanded) {
-      initCopyButtonsInPanel(defaultExpanded);
-    }
-  })();
-
-  function initCopyButtonsInPanel(panel) {
-    var buttons = panel.querySelectorAll('.copy-btn');
-    buttons.forEach(function(btn) {
-      if (btn.dataset.copyBound) return;
-      btn.dataset.copyBound = 'true';
-      btn.addEventListener('click', handleCopy);
-    });
-  }
-
-  function handleCopy() {
-    var btn = this;
-    var text = btn.getAttribute('data-copy-text');
-    if (!text) {
-      var container = btn.closest('.flex');
-      if (container) {
-        var link = container.querySelector('a');
-        if (link) {
-          text = link.href || link.textContent;
+      var text = btn.getAttribute('data-copy-text');
+      if (!text) {
+        var container = btn.closest('.flex');
+        if (container) {
+          var link = container.querySelector('a');
+          if (link) {
+            text = link.href || link.textContent;
+          }
         }
       }
-    }
 
-    if (text) {
-      text = text.trim();
-      var originalContent = btn.innerHTML;
-      btn.innerHTML = '<span class="text-sm font-medium">已复制</span>';
-      btn.disabled = true;
-      btn.classList.add('!text-green-500');
+      if (text) {
+        text = text.trim();
+        var originalContent = btn.innerHTML;
+        btn.innerHTML = '<span class="text-sm font-medium">已复制</span>';
+        btn.disabled = true;
+        btn.classList.add('text-green-500');
 
-      var copyText = text;
-      var restoreBtn = function() {
-        btn.innerHTML = originalContent;
-        btn.disabled = false;
-        btn.classList.remove('!text-green-500');
-      };
+        navigator.clipboard.writeText(text).then(function() {
+          setTimeout(function() {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+            btn.classList.remove('text-green-500');
+          }, 3000);
+        }).catch(function() {
+          var textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.cssText = 'position:fixed;opacity:0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          setTimeout(function() {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+            btn.classList.remove('text-green-500');
+          }, 3000);
+        });
+      }
+    });
 
-      navigator.clipboard.writeText(copyText).then(function() {
-        setTimeout(restoreBtn, 3000);
-      }).catch(function() {
-        var textarea = document.createElement('textarea');
-        textarea.value = copyText;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-        setTimeout(restoreBtn, 3000);
+    // 渲染友链须知和免责申明列表
+    function renderRequirementsList() {
+      var lists = document.querySelectorAll('.requirements-list, .disclaimer-list');
+      lists.forEach(function(list) {
+        if (list.dataset.rendered) return;
+        list.dataset.rendered = 'true';
+        var text = list.getAttribute('data-text');
+        if (text) {
+          var lines = text.split('\n');
+          lines.forEach(function(line) {
+            if (line.trim()) {
+              var li = document.createElement('li');
+              li.textContent = line.trim();
+              list.appendChild(li);
+            }
+          });
+        }
       });
     }
-  }
 
-  function showCopyToast(message) {
-    var existingToast = document.querySelector('.copy-toast');
-    if (existingToast) {
-      existingToast.remove();
+    // DOM 加载完成后初始化
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderRequirementsList);
+    } else {
+      renderRequirementsList();
     }
-
-    var toast = document.createElement('div');
-    toast.className = 'copy-toast fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] rounded-lg bg-(--primary) px-4 py-2 text-sm font-medium text-white shadow-lg';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-
-    setTimeout(function() {
-      toast.style.opacity = '0';
-      toast.style.transition = 'opacity 0.3s';
-      setTimeout(function() {
-        toast.remove();
-      }, 300);
-    }, 2000);
-  }
-
-  // 渲染友链须知和免责申明列表
-  function renderRequirementsList() {
-    var lists = document.querySelectorAll('.requirements-list, .disclaimer-list');
-    lists.forEach(function(list) {
-      if (list.hasAttribute('data-rendered')) {
-        return;
-      }
-      var text = list.getAttribute('data-text');
-      if (text) {
-        var lines = text.split('\n');
-        lines.forEach(function(line) {
-          if (line.trim()) {
-            var li = document.createElement('li');
-            li.textContent = line.trim();
-            list.appendChild(li);
-          }
-        });
-        list.setAttribute('data-rendered', 'true');
-      }
-    });
-  }
-
-  // 渲染友链须知和免责申明列表
-  function renderRequirementsList() {
-    var lists = document.querySelectorAll('.requirements-list, .disclaimer-list');
-    lists.forEach(function(list) {
-      if (list.dataset.rendered) return;
-      list.dataset.rendered = 'true';
-      
-      var text = list.getAttribute('data-text');
-      if (text) {
-        var lines = text.split('\n');
-        lines.forEach(function(line) {
-          if (line.trim()) {
-            var li = document.createElement('li');
-            li.textContent = line.trim();
-            list.appendChild(li);
-          }
-        });
-      }
-    });
-  }
-
-  // 初始化所有功能
-  function initAll() {
-    initCopyButtonsInPanel(document);
-    renderRequirementsList();
-    // 重新初始化默认展开面板的复制按钮
-    var defaultExpanded = document.querySelector('.collapse-content:not(.hidden)');
-    if (defaultExpanded) {
-      initCopyButtonsInPanel(defaultExpanded);
-    }
-  }
-
-  // DOM 加载完成后初始化
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAll);
-  } else {
-    initAll();
-  }
+  })();
 </script>
