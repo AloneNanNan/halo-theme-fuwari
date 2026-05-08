@@ -117,22 +117,31 @@ const className = Astro.props.class;
 </div>
 
 <script>
-  function loadNavbarButtons() {
-    const settingBtn = document.getElementById("display-settings-switch");
-    settingBtn?.addEventListener("click", () => {
-      document
-        .getElementById("display-setting")
-        ?.classList.toggle("float-panel-closed");
-    });
+  (function() {
+    function loadNavbarButtons() {
+      const settingBtn = document.getElementById("display-settings-switch");
+      settingBtn?.addEventListener("click", () => {
+        document
+          .getElementById("display-setting")
+          ?.classList.toggle("float-panel-closed");
+      });
 
-    const menuBtn = document.getElementById("nav-menu-switch");
-    menuBtn?.addEventListener("click", () => {
-      document
-        .getElementById("nav-menu-panel")
-        ?.classList.toggle("float-panel-closed");
-    });
-  }
+      const menuBtn = document.getElementById("nav-menu-switch");
+      menuBtn?.addEventListener("click", () => {
+        document
+          .getElementById("nav-menu-panel")
+          ?.classList.toggle("float-panel-closed");
+      });
+    }
 
-  loadNavbarButtons();
-  document.addEventListener("swup:contentReplaced", loadNavbarButtons);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadNavbarButtons);
+    } else {
+      loadNavbarButtons();
+    }
+    
+    document.addEventListener("swup:contentReplaced", function() {
+      setTimeout(loadNavbarButtons, 100);
+    });
+  })();
 </script>

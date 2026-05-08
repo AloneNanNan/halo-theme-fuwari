@@ -57,38 +57,43 @@
 </div>
 
 <script is:inline>
-  // 切换子菜单显示/隐藏 - 附加到 window 确保全局可访问
-  window.toggleSubmenu = function(buttonEl, submenuId) {
-    const submenu = document.getElementById(submenuId);
-    const arrow = buttonEl.querySelector('span');
-    if (submenu) {
-      submenu.classList.toggle('hidden');
-      if (arrow) {
-        arrow.classList.toggle('rotate-90');
+  (function() {
+    // 切换子菜单显示/隐藏
+    window.toggleSubmenu = function(buttonEl, submenuId) {
+      var submenu = document.getElementById(submenuId);
+      var arrow = buttonEl.querySelector('span');
+      if (submenu) {
+        submenu.classList.toggle('hidden');
+        if (arrow) {
+          arrow.classList.toggle('rotate-90');
+        }
       }
-    }
-  };
-  
-  // 页面加载和 Swup 切换后重新绑定事件
-  function initNavMenuPanel() {
-    const panel = document.getElementById('nav-menu-panel');
-    if (!panel) return;
-    
-    // 为所有菜单链接添加点击事件，点击后关闭面板
-    panel.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', function() {
-        panel.classList.add('float-panel-closed');
+    };
+
+    // 初始化菜单面板
+    function initNavMenuPanel() {
+      var panel = document.getElementById('nav-menu-panel');
+      if (!panel) return;
+
+      // 为所有菜单链接添加点击事件，点击后关闭面板
+      var links = panel.querySelectorAll('a');
+      links.forEach(function(link) {
+        link.addEventListener('click', function() {
+          panel.classList.add('float-panel-closed');
+        });
       });
+    }
+
+    // 确保 DOM 加载完成后初始化
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initNavMenuPanel);
+    } else {
+      initNavMenuPanel();
+    }
+
+    // Swup 页面切换后重新初始化
+    document.addEventListener('swup:contentReplaced', function() {
+      setTimeout(initNavMenuPanel, 100);
     });
-  }
-  
-  // 初始加载时初始化
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNavMenuPanel);
-  } else {
-    initNavMenuPanel();
-  }
-  
-  // Swup 页面切换后重新初始化
-  document.addEventListener('swup:contentReplaced', initNavMenuPanel);
+  })();
 </script>
