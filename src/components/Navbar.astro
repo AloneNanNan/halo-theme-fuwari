@@ -105,8 +105,21 @@ const className = Astro.props.class;
         class="btn-plain scale-animation h-11 w-11 rounded-lg active:scale-90 md:!hidden"
         id="nav-menu-switch"
         type="button"
+        onclick="toggleNavbarPanel('nav-menu-panel')"
       >
         <span class="icon-[material-symbols--menu-rounded] text-[1.25rem]"
+        ></span>
+      </button>
+      <button
+        th:unless="${theme.config.base.themeColor.fixed}"
+        th:aria-label="#{nav.displaySettings}"
+        aria-label="Display Settings"
+        class="btn-plain scale-animation h-11 w-11 rounded-lg active:scale-90"
+        id="display-settings-switch"
+        type="button"
+        onclick="toggleNavbarPanel('display-setting')"
+      >
+        <span class="icon-[material-symbols--palette-outline] text-[1.25rem]"
         ></span>
       </button>
     </div>
@@ -116,44 +129,11 @@ const className = Astro.props.class;
   </div>
 </div>
 
-<script>
-  (function() {
-    function toggleNavbarPanel(panelId) {
-      var panel = document.getElementById(panelId);
-      if (panel) {
-        panel.classList.toggle("float-panel-closed");
-      }
+<script is:inline>
+  window.toggleNavbarPanel = function(panelId) {
+    var panel = document.getElementById(panelId);
+    if (panel) {
+      panel.classList.toggle("float-panel-closed");
     }
-
-    function initNavbarButtons() {
-      // 使用事件委托
-      document.addEventListener("click", function(e) {
-        var target = e.target;
-        
-        // 处理菜单按钮
-        if (target.closest("#nav-menu-switch")) {
-          toggleNavbarPanel("nav-menu-panel");
-          e.preventDefault();
-          e.stopPropagation();
-        }
-        
-        // 处理设置按钮
-        if (target.closest("#display-settings-switch")) {
-          toggleNavbarPanel("display-setting");
-          e.preventDefault();
-          e.stopPropagation();
-        }
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initNavbarButtons);
-    } else {
-      initNavbarButtons();
-    }
-    
-    document.addEventListener("swup:contentReplaced", function() {
-      setTimeout(initNavbarButtons, 100);
-    });
-  })();
+  };
 </script>
