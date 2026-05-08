@@ -2,9 +2,6 @@
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 ---
 
-<!-- 禁用 Swup，避免服务端渲染内容丢失 -->
-<meta data-swup-ignore="" />
-
 <MainGridLayout title="${linksTitle + ' - ' + site.title}">
   <Fragment slot="head">
     <title th:text="${linksTitle + ' - ' + site.title}"></title>
@@ -385,16 +382,21 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
 
     // Swup 页面切换后重新初始化
     if (typeof window !== 'undefined') {
-      document.addEventListener('swup:contentReplaced', function() {
-        setTimeout(initCollapse, 100);
+      var swupEvents = ['swup:contentReplaced', 'swup:pageView'];
+      swupEvents.forEach(function(eventName) {
+        document.addEventListener(eventName, function() {
+          setTimeout(initCollapse, 300);
+        });
       });
     }
 
     // 确保 DOM 加载完成后初始化
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initCollapse);
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(initCollapse, 100);
+      });
     } else {
-      initCollapse();
+      setTimeout(initCollapse, 100);
     }
   })();
 
