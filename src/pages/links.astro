@@ -381,23 +381,17 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
     }
 
     // Swup 页面切换后重新初始化
-    function initSwupCollapse() {
-      if (typeof window.swup !== 'undefined') {
-        window.swup.on('contentReplaced', function() {
-          setTimeout(initCollapse, 100);
-        });
-      }
+    if (typeof window !== 'undefined') {
+      document.addEventListener('swup:contentReplaced', function() {
+        setTimeout(initCollapse, 100);
+      });
     }
 
     // 确保 DOM 加载完成后初始化
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        initCollapse();
-        initSwupCollapse();
-      });
+      document.addEventListener('DOMContentLoaded', initCollapse);
     } else {
       initCollapse();
-      initSwupCollapse();
     }
   })();
 
