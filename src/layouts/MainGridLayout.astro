@@ -155,4 +155,141 @@ const mainPanelTop = `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEI
       )
     }
   </div>
+
+  <!-- 折叠面板和复制功能脚本 - 放在 Layout 外确保 Swup 切换后仍可执行 -->
+  <script is:inline>
+    (function() {
+      // 折叠面板交互
+      function initCollapse() {
+        var headers = document.querySelectorAll('[data-collapse-target]');
+        headers.forEach(function(header) {
+          if (header.dataset.collapseBound) return;
+          header.dataset.collapseBound = 'true';
+          
+          header.addEventListener('click', function() {
+            var targetId = header.getAttribute('data-collapse-target');
+            var content = document.getElementById(targetId);
+            var icon = header.querySelector('.collapse-icon');
+
+            if (content) {
+              var isHidden = content.classList.contains('hidden');
+
+              // 关闭所有面板
+              document.querySelectorAll('.collapse-content').forEach(function(c) {
+                c.classList.add('hidden');
+              });
+              document.querySelectorAll('.collapse-icon').forEach(function(i) {
+                i.classList.remove('is-expanded');
+              });
+
+              // 切换当前项（如果是折叠的则展开）
+              if (isHidden) {
+                content.classList.remove('hidden');
+                if (icon) {
+                  icon.classList.add('is-expanded');
+                }
+              }
+            }
+          });
+        });
+      }
+
+      // 复制功能
+      function initCopy() {
+        var buttons = document.querySelectorAll('.copy-btn');
+        buttons.forEach(function(btn) {
+          if (btn.dataset.copyBound) return;
+          btn.dataset.copyBound = 'true';
+          
+          btn.addEventListener('click', function() {
+            var text = btn.getAttribute('data-copy-text');
+            if (!text) {
+              var container = btn.closest('.flex');
+              if (container) {
+                var link = container.querySelector('a');
+                if (link) {
+                  text = link.href || link.textContent;
+                }
+              }
+            }
+
+            if (text) {
+              text = text.trim();
+              var originalContent = btn.innerHTML;
+              btn.innerHTML = '<span class="text-sm font-medium">已复制</span>';
+              btn.disabled = true;
+              btn.classList.add('text-green-500');
+
+              navigator.clipboard.writeText(text).then(function() {
+                setTimeout(function() {
+                  btn.innerHTML = originalContent;
+                  btn.disabled = false;
+                  btn.classList.remove('text-green-500');
+                }, 3000);
+              }).catch(function() {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.cssText = 'position:fixed;opacity:0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                setTimeout(function() {
+                  btn.innerHTML = originalContent;
+                  btn.disabled = false;
+                  btn.classList.remove('text-green-500');
+                }, 3000);
+              });
+            }
+          });
+        });
+      }
+
+      // 渲染友链须知和免责申明列表
+      function renderRequirementsList() {
+        var lists = document.querySelectorAll('.requirements-list, .disclaimer-list');
+        lists.forEach(function(list) {
+          if (list.dataset.rendered) return;
+          list.dataset.rendered = 'true';
+          var text = list.getAttribute('data-text');
+          if (text) {
+            var lines = text.split('\n');
+            lines.forEach(function(line) {
+              if (line.trim()) {
+                var li = document.createElement('li');
+                li.textContent = line.trim();
+                list.appendChild(li);
+              }
+            });
+          }
+        });
+      }
+
+      // 初始化所有功能
+      function initAll() {
+        initCollapse();
+        initCopy();
+        renderRequirementsList();
+      }
+
+      // 初始化
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAll);
+      } else {
+        initAll();
+      }
+
+      // Swup 页面切换后重新初始化
+      document.addEventListener('swup:contentReplaced', function() {
+        // 重置绑定标记，让功能可以重新初始化
+        document.querySelectorAll('[data-collapse-bound]').forEach(function(el) {
+          el.dataset.collapseBound = '';
+        });
+        document.querySelectorAll('[data-copy-bound]').forEach(function(el) {
+          el.dataset.copyBound = '';
+        });
+        initAll();
+      });
+    })();
+  </script>
 </Layout>
