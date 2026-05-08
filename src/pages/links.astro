@@ -350,83 +350,89 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
       });
     }
 
-    // 折叠面板交互
+    // 折叠面板交互 - wing 主题方式：直接绑定到每个 header
     function initCollapse() {
-      document.addEventListener('click', function(e) {
-        var header = e.target.closest('[data-collapse-target]');
-        if (!header) return;
+      var headers = document.querySelectorAll('[data-collapse-target]');
+      headers.forEach(function(header) {
+        if (header.dataset.collapseBound) return;
+        header.dataset.collapseBound = 'true';
+        
+        header.addEventListener('click', function() {
+          var targetId = header.getAttribute('data-collapse-target');
+          var content = document.getElementById(targetId);
+          var icon = header.querySelector('.collapse-icon');
 
-        var targetId = header.getAttribute('data-collapse-target');
-        var content = document.getElementById(targetId);
-        var icon = header.querySelector('.collapse-icon');
+          if (content) {
+            var isHidden = content.classList.contains('hidden');
 
-        if (content) {
-          var isHidden = content.classList.contains('hidden');
+            // 关闭所有面板
+            document.querySelectorAll('.collapse-content').forEach(function(c) {
+              c.classList.add('hidden');
+            });
+            document.querySelectorAll('.collapse-icon').forEach(function(i) {
+              i.classList.remove('is-expanded');
+            });
 
-          // 关闭所有面板
-          document.querySelectorAll('.collapse-content').forEach(function(c) {
-            c.classList.add('hidden');
-          });
-          document.querySelectorAll('.collapse-icon').forEach(function(i) {
-            i.classList.remove('is-expanded');
-          });
-
-          // 切换当前项（如果是折叠的则展开）
-          if (isHidden) {
-            content.classList.remove('hidden');
-            if (icon) {
-              icon.classList.add('is-expanded');
+            // 切换当前项（如果是折叠的则展开）
+            if (isHidden) {
+              content.classList.remove('hidden');
+              if (icon) {
+                icon.classList.add('is-expanded');
+              }
             }
           }
-        }
+        });
       });
     }
 
-    // 复制功能
+    // 复制功能 - wing 主题方式：直接绑定到每个按钮
     function initCopy() {
-      document.addEventListener('click', function(e) {
-        var btn = e.target.closest('.copy-btn');
-        if (!btn) return;
-
-        var text = btn.getAttribute('data-copy-text');
-        if (!text) {
-          var container = btn.closest('.flex');
-          if (container) {
-            var link = container.querySelector('a');
-            if (link) {
-              text = link.href || link.textContent;
+      var buttons = document.querySelectorAll('.copy-btn');
+      buttons.forEach(function(btn) {
+        if (btn.dataset.copyBound) return;
+        btn.dataset.copyBound = 'true';
+        
+        btn.addEventListener('click', function() {
+          var text = btn.getAttribute('data-copy-text');
+          if (!text) {
+            var container = btn.closest('.flex');
+            if (container) {
+              var link = container.querySelector('a');
+              if (link) {
+                text = link.href || link.textContent;
+              }
             }
           }
-        }
 
-        if (text) {
-          text = text.trim();
-          var originalContent = btn.innerHTML;
-          btn.innerHTML = '<span class="text-sm font-medium">已复制</span>';
-          btn.disabled = true;
-          btn.classList.add('text-green-500');
+          if (text) {
+            text = text.trim();
+            var originalContent = btn.innerHTML;
+            btn.innerHTML = '<span class="text-sm font-medium">已复制</span>';
+            btn.disabled = true;
+            btn.classList.add('text-green-500');
 
-          navigator.clipboard.writeText(text).then(function() {
-            setTimeout(function() {
-              btn.innerHTML = originalContent;
-              btn.disabled = false;
-              btn.classList.remove('text-green-500');
-            }, 3000);
-          }).catch(function() {
-            var textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.cssText = 'position:fixed;opacity:0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            setTimeout(function() {
-              btn.innerHTML = originalContent;
-              btn.disabled = false;
-              btn.classList.remove('text-green-500');
-            }, 3000);
-          });
-        }
+            navigator.clipboard.writeText(text).then(function() {
+              setTimeout(function() {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                btn.classList.remove('text-green-500');
+              }, 3000);
+            }).catch(function() {
+              var textarea = document.createElement('textarea');
+              textarea.value = text;
+              textarea.style.cssText = 'position:fixed;opacity:0';
+              document.body.appendChild(textarea);
+              textarea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textarea);
+              setTimeout(function() {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                btn.classList.remove('text-green-500');
+              }, 3000);
+            });
+          }
+        });
       });
     }
 
@@ -448,9 +454,7 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
     document.addEventListener('swup:contentReplaced', function() {
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
-          renderRequirementsList();
-          initCollapse();
-          initCopy();
+          init();
         });
       });
     });
