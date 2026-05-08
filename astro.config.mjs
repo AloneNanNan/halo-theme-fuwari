@@ -32,6 +32,10 @@ export default defineConfig({
       updateHead: true,
       updateBodyClass: false,
       globalInstance: true,
+      ignoreVisit: function(url) {
+        // 禁用 Swup 对友链页面的处理，避免内容渲染问题
+        return url.pathname === "/links" || url.pathname === "/links.html";
+      },
     }),
     icon({
       include: {
