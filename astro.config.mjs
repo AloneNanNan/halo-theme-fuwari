@@ -26,14 +26,14 @@ export default defineConfig({
       // when the Tailwind class `transition-all` is used
       containers: ["#swup-container", "#toc-container"],
       smoothScrolling: true,
-      cache: true,
-      preload: true,
+      cache: false, // 禁用缓存，避免友链页面内容不完整
+      preload: false, // 禁用预加载
       accessibility: true,
       updateHead: true,
       updateBodyClass: false,
       globalInstance: true,
       ignoreVisit: function(url) {
-        // 禁用 Swup 对友链页面的处理，避免内容渲染问题
+        // 禁用 Swup 对友链页面的处理
         return url.pathname === "/links" || url.pathname === "/links.html";
       },
     }),
