@@ -331,72 +331,51 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
 <!-- 折叠面板和复制功能脚本 -->
 <script is:inline>
   (function() {
-    function initCollapse() {
-      // 折叠面板交互 - 使用事件委托
-      document.addEventListener('click', function(e) {
-        var header = e.target.closest('[data-collapse-target]');
-        if (!header) return;
+    // 折叠面板交互
+    document.addEventListener('click', function(e) {
+      var header = e.target.closest('[data-collapse-target]');
+      if (!header) return;
 
-        var targetId = header.getAttribute('data-collapse-target');
-        var content = document.getElementById(targetId);
-        var icon = header.querySelector('.collapse-icon');
+      var targetId = header.getAttribute('data-collapse-target');
+      var content = document.getElementById(targetId);
+      var icon = header.querySelector('.collapse-icon');
 
-        if (content) {
-          var isHidden = content.classList.contains('hidden');
+      if (content) {
+        var isHidden = content.classList.contains('hidden');
 
-          // 关闭所有面板
-          document.querySelectorAll('.collapse-content').forEach(function(c) {
-            c.classList.add('hidden');
-          });
-          document.querySelectorAll('.collapse-icon').forEach(function(i) {
-            i.classList.remove('is-expanded');
-          });
-
-          // 切换当前项（如果是折叠的则展开）
-          if (isHidden) {
-            content.classList.remove('hidden');
-            if (icon) {
-              icon.classList.add('is-expanded');
-            }
-            // 初始化当前面板内的复制按钮
-            initCopyButtonsInPanel(content);
-          }
-        }
-      });
-
-      // 复制功能 - 使用事件委托
-      document.addEventListener('click', function(e) {
-        var btn = e.target.closest('.copy-btn');
-        if (!btn || btn.dataset.copyBound) return;
-        
-        btn.dataset.copyBound = 'true';
-        btn.addEventListener('click', handleCopy);
-      });
-
-      // 页面加载时，初始化默认展开的面板的复制按钮
-      var defaultExpanded = document.querySelector('.collapse-content:not(.hidden)');
-      if (defaultExpanded) {
-        initCopyButtonsInPanel(defaultExpanded);
-      }
-    }
-
-    // Swup 页面切换后重新初始化
-    if (typeof window !== 'undefined') {
-      var swupEvents = ['swup:contentReplaced', 'swup:pageView'];
-      swupEvents.forEach(function(eventName) {
-        document.addEventListener(eventName, function() {
-          setTimeout(initCollapse, 300);
+        // 关闭所有面板
+        document.querySelectorAll('.collapse-content').forEach(function(c) {
+          c.classList.add('hidden');
         });
-      });
-    }
+        document.querySelectorAll('.collapse-icon').forEach(function(i) {
+          i.classList.remove('is-expanded');
+        });
 
-    // 确保 DOM 加载完成后初始化
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(initCollapse, 100);
-      });
-    } else {
-      setTimeout(initCollapse, 100);
+        // 切换当前项（如果是折叠的则展开）
+        if (isHidden) {
+          content.classList.remove('hidden');
+          if (icon) {
+            icon.classList.add('is-expanded');
+          }
+          // 初始化当前面板内的复制按钮
+          initCopyButtonsInPanel(content);
+        }
+      }
+    });
+
+    // 复制功能
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.copy-btn');
+      if (!btn || btn.dataset.copyBound) return;
+      
+      btn.dataset.copyBound = 'true';
+      btn.addEventListener('click', handleCopy);
+    });
+
+    // 页面加载时，初始化默认展开的面板的复制按钮
+    var defaultExpanded = document.querySelector('.collapse-content:not(.hidden)');
+    if (defaultExpanded) {
+      initCopyButtonsInPanel(defaultExpanded);
     }
   })();
 
@@ -515,12 +494,21 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
     });
   }
 
-  // 初始化
+  // 初始化所有功能
   function initAll() {
     initCopyButtonsInPanel(document);
     renderRequirementsList();
+    // 重新初始化默认展开面板的复制按钮
+    var defaultExpanded = document.querySelector('.collapse-content:not(.hidden)');
+    if (defaultExpanded) {
+      initCopyButtonsInPanel(defaultExpanded);
+    }
   }
 
-  document.addEventListener('DOMContentLoaded', initAll);
-  document.addEventListener('swup:contentReplaced', initAll);
+  // DOM 加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll);
+  } else {
+    initAll();
+  }
 </script>
