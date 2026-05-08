@@ -58,25 +58,23 @@ const className = Astro.props.class;
           <!-- PC 端子菜单下拉 -->
           <div
             th:if="${hasChildren}"
-            class="absolute left-0 top-full mt-1 min-w-48 rounded-lg bg-(--card-bg) p-2 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+            class="absolute left-0 top-full mt-1 min-w-48 max-w-72 rounded-lg bg-(--card-bg) p-2 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
             th:id="'pc-submenu-' + ${itemStat.index}"
           >
             <a
               th:each="childItem : ${menuItem.children}"
               th:href="@{${childItem.status.href}}"
               th:target="${childItem.spec.target?.value}"
-              class="block rounded-lg py-2 px-3 transition hover:bg-(--btn-plain-bg-hover) dark:hover:bg-white/10"
+              class="group flex items-center justify-between gap-3 rounded-lg py-2 px-3 transition hover:bg-(--btn-plain-bg-hover) dark:hover:bg-white/10 whitespace-nowrap"
             >
-              <div class="flex items-center gap-2">
-                <span
-                  class="font-medium text-black/75 dark:text-white/75"
-                  th:text="${childItem.status.displayName}">子菜单</span
-                >
-                <span
-                  th:if="${childItem.spec.target?.value == '_blank'}"
-                  class="icon-[tabler--external-link] text-[0.9rem] text-black/50 dark:text-white/50"
-                ></span>
-              </div>
+              <span
+                class="font-medium text-black/75 dark:text-white/75 truncate"
+                th:text="${childItem.status.displayName}">子菜单</span
+              >
+              <span
+                th:if="${childItem.spec.target?.value == '_blank'}"
+                class="icon-[tabler--external-link] text-[0.9rem] text-black/50 dark:text-white/50 flex-shrink-0"
+              ></span>
             </a>
           </div>
         </div>
