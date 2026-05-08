@@ -118,30 +118,42 @@ const className = Astro.props.class;
 
 <script>
   (function() {
-    function loadNavbarButtons() {
-      const settingBtn = document.getElementById("display-settings-switch");
-      settingBtn?.addEventListener("click", () => {
-        document
-          .getElementById("display-setting")
-          ?.classList.toggle("float-panel-closed");
-      });
+    function toggleNavbarPanel(panelId) {
+      var panel = document.getElementById(panelId);
+      if (panel) {
+        panel.classList.toggle("float-panel-closed");
+      }
+    }
 
-      const menuBtn = document.getElementById("nav-menu-switch");
-      menuBtn?.addEventListener("click", () => {
-        document
-          .getElementById("nav-menu-panel")
-          ?.classList.toggle("float-panel-closed");
+    function initNavbarButtons() {
+      // 使用事件委托
+      document.addEventListener("click", function(e) {
+        var target = e.target;
+        
+        // 处理菜单按钮
+        if (target.closest("#nav-menu-switch")) {
+          toggleNavbarPanel("nav-menu-panel");
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        
+        // 处理设置按钮
+        if (target.closest("#display-settings-switch")) {
+          toggleNavbarPanel("display-setting");
+          e.preventDefault();
+          e.stopPropagation();
+        }
       });
     }
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadNavbarButtons);
+      document.addEventListener('DOMContentLoaded', initNavbarButtons);
     } else {
-      loadNavbarButtons();
+      initNavbarButtons();
     }
     
     document.addEventListener("swup:contentReplaced", function() {
-      setTimeout(loadNavbarButtons, 100);
+      setTimeout(initNavbarButtons, 100);
     });
   })();
 </script>
