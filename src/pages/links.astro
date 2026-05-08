@@ -2,6 +2,9 @@
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 ---
 
+<!-- 禁用 Swup，避免服务端渲染内容丢失 -->
+<meta data-swup-ignore="" />
+
 <MainGridLayout title="${linksTitle + ' - ' + site.title}">
   <Fragment slot="head">
     <title th:text="${linksTitle + ' - ' + site.title}"></title>
