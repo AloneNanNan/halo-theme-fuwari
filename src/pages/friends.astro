@@ -1,0 +1,134 @@
+---
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+---
+
+<MainGridLayout title="${page.friends.title + ' - ' + site.title}">
+  <Fragment slot="head">
+    <title th:text="${page.friends.title + ' - ' + site.title}"></title>
+  </Fragment>
+
+  <!-- 朋友圈头部 -->
+  <section class="card-base onload-animation mb-4 overflow-hidden px-5 py-5 md:px-7 md:py-6">
+    <div class="mb-5 flex flex-col items-start gap-3 md:flex-row md:items-end md:justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-90" th:text="${page.friends.title}">朋友圈</h1>
+        <div class="mt-1 text-sm text-50">
+          <span th:text="#{page.friends.description}">关注博主的最新动态</span>
+        </div>
+      </div>
+      <a th:href="@{/moments/rss.xml}" class="btn-regular h-11 w-fit rounded-lg px-4 text-sm font-bold active:scale-95">
+        <span class="icon-[streamline-plump--rss-square-solid] mr-1.5 text-base"></span>
+        <span>RSS</span>
+      </a>
+    </div>
+
+    <!-- 使用 /friends 路由提供的 friends 变量 -->
+    <div th:if="${not #lists.isEmpty(friends.items)}" class="friends-list onload-animation">
+      <article th:each="friend : ${friends.items}" class="relative py-5 transition">
+        <div class="flex items-start gap-4">
+          <!-- 头像 -->
+          <div class="relative shrink-0">
+            <img
+              th:if="${not #strings.isEmpty(friend.spec.logo)}"
+              th:src="${friend.spec.logo}"
+              th:alt="${friend.spec.author}"
+              class="h-13 w-13 rounded-full object-cover ring-2 ring-(--btn-card-bg-hover)"
+            />
+            <div
+              th:unless="${not #strings.isEmpty(friend.spec.logo)}"
+              class="flex h-13 w-13 shrink-0 items-center justify-center rounded-full bg-(--btn-regular-bg) text-(--primary) ring-2 ring-(--btn-card-bg-hover)"
+            >
+              <span class="icon-[material-symbols--account-circle] text-3xl"></span>
+            </div>
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <!-- 作者信息和时间 -->
+            <div class="flex min-w-0 items-start justify-between gap-3">
+              <div class="min-w-0">
+                <a
+                  th:if="${not #strings.isEmpty(friend.spec.authorUrl)}"
+                  th:href="${friend.spec.authorUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="truncate text-base font-bold text-(--primary) hover:underline"
+                  th:text="${friend.spec.author}"
+                ></a>
+                <span
+                  th:if="${#strings.isEmpty(friend.spec.authorUrl)}"
+                  class="truncate text-base font-bold text-(--primary)"
+                  th:text="${friend.spec.author}"
+                ></span>
+                <time
+                  class="mt-0.5 block text-sm text-50"
+                  th:datetime="${friend.spec.pubDate}"
+                  th:text="${friend.spec.pubDate != null ? #dates.format(friend.spec.pubDate, 'yyyy-MM-dd') : ''}"
+                ></time>
+              </div>
+              <span class="icon-[fa6-solid--arrow-up-right-from-square] text-xl text-50"></span>
+            </div>
+
+            <!-- 文章标题 -->
+            <a
+              th:href="${friend.spec.postLink}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-3 block truncate text-base font-medium text-90 hover:text-(--primary)"
+              th:text="${friend.spec.title}"
+            ></a>
+
+            <!-- 文章描述 -->
+            <div
+              th:if="${not #strings.isEmpty(friend.spec.description)}"
+              class="mt-2 line-clamp-3 text-sm text-50"
+              th:text="${friend.spec.description}"
+            ></div>
+
+            <!-- 来源标识 -->
+            <div class="mt-3 flex items-center gap-2 text-xs text-30">
+              <span class="icon-[material-symbols--link-rounded] text-sm"></span>
+              <span th:text="#{page.friends.source}">来自朋友圈</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- 空状态 -->
+    <div th:if="${#lists.isEmpty(friends.items)}" class="py-12 text-center text-50">
+      <span class="icon-[material-symbols--inbox-rounded] text-5xl text-30"></span>
+      <p class="mt-4" th:text="#{page.friends.empty}">暂无朋友圈动态</p>
+    </div>
+
+    <!-- 分页 -->
+    <div th:if="${friends.hasPrevious() || friends.hasNext()}" class="mt-6 flex items-center justify-center gap-4">
+      <a
+        th:if="${friends.hasPrevious()}"
+        th:href="@{${friends.prevUrl}}"
+        class="btn-regular h-11 rounded-lg px-5 text-sm font-bold active:scale-95"
+      >
+        <span class="icon-[material-symbols--chevron-left-rounded] mr-1 text-xl"></span>
+        <span th:text="#{common.prev}">上一页</span>
+      </a>
+      <span class="flex h-11 items-center px-4 text-sm text-50">
+        <span th:text="${friends.page}"></span>
+        <span>/</span>
+        <span th:text="${friends.totalPages}"></span>
+      </span>
+      <a
+        th:if="${friends.hasNext()}"
+        th:href="@{${friends.nextUrl}}"
+        class="btn-regular h-11 rounded-lg px-5 text-sm font-bold active:scale-95"
+      >
+        <span th:text="#{common.next}">下一页</span>
+        <span class="icon-[material-symbols--chevron-right-rounded] ml-1 text-xl"></span>
+      </a>
+    </div>
+  </section>
+
+  <style>
+    .friends-list > article + article {
+      border-top: 1px dashed var(--line-color);
+    }
+  </style>
+</MainGridLayout>
