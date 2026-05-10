@@ -461,3 +461,25 @@ const themeSettingScript = `<script type="application/json" id="theme-config" th
   });
   scrollFunction();
 </script>
+
+<script is:inline>
+  // 友链页面强制刷新：确保 link-submit 插件脚本加载
+  (function() {
+    const isLinksPage = window.location.pathname.includes('/links');
+    const isSwupNavigation = sessionStorage.getItem('swup-navigation') === 'true';
+    
+    if (isLinksPage && isSwupNavigation) {
+      // 从其他页面通过 Swup 切换到友链页面，强制完整刷新以加载插件脚本
+      sessionStorage.removeItem('swup-navigation');
+      window.location.reload();
+      return;
+    }
+    
+    // 监听 Swup 开始导航，标记为 Swup 导航
+    if (window.swup) {
+      window.swup.hooks.on('visit:start', function() {
+        sessionStorage.setItem('swup-navigation', 'true');
+      });
+    }
+  })();
+</script>

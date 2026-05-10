@@ -297,16 +297,334 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
       </div>
     </div>
 
-    <!-- 申请友链按钮 - 放在折叠面板下方 -->
-    <div th:if="${theme.config.links.enable_apply_btn}" class="mt-4 flex justify-center">
-      <a
-        href="javascript:LinkSubmitWidget.open()"
-        class="btn-regular scale-animation inline-flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-bold active:scale-95"
+    <!-- 友链提交表单 - 折叠面板形式 -->
+    <div th:if="${pluginFinder.available('link-submit') && theme.config.links.enable_apply_btn}" class="collapse-item rounded-xl bg-(--btn-regular-bg) overflow-hidden mt-4">
+      <!-- 折叠头部 - 申请友链按钮 -->
+      <button
+        type="button"
+        class="collapse-header flex w-full items-center justify-between p-4 text-left transition"
+        data-collapse-target="link-submit-form"
       >
-        <span>申请友链</span>
-        <span class="icon-[material-symbols--add-rounded] text-lg"></span>
-      </a>
+        <div class="flex items-center gap-2">
+          <span class="icon-[material-symbols--add-circle-outline-rounded] text-xl text-(--primary)"></span>
+          <span class="font-medium text-90">申请友链</span>
+        </div>
+        <span class="collapse-icon icon-[material-symbols--expand-more-rounded] text-xl text-50 transition-transform duration-200"></span>
+      </button>
+      
+      <!-- 折叠内容 - 表单 -->
+      <div
+        id="link-submit-form"
+        class="collapse-content hidden"
+      >
+        <div class="px-4 pb-4 -mt-2">
+          <!-- 成功提示 -->
+          <div id="link-submit-success" class="hidden text-center py-6 mb-4 bg-(--bg-secondary) rounded-lg">
+            <span class="icon-[material-symbols--check-circle-rounded] text-5xl text-green-500 mb-3 block"></span>
+            <h3 class="text-base font-bold text-90 mb-1">提交成功！</h3>
+            <p class="text-sm text-50">您的友链申请已提交，管理员审核通过后即可显示。</p>
+          </div>
+
+          <!-- 表单 -->
+          <form id="link-submit-form-actual" class="space-y-3">
+            <!-- 类型选择 -->
+            <div>
+              <label class="mb-1.5 block text-sm font-medium text-90">申请类型</label>
+              <div class="flex gap-2">
+                <label class="link-type-label flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg border-2 border-(--primary) bg-(--primary) px-3 py-2 text-xs font-bold text-white transition hover:opacity-90">
+                  <input type="radio" name="type" value="add" checked class="sr-only" />
+                  <span class="link-type-icon icon-[material-symbols--add-circle-outline-rounded]"></span>
+                  <span class="link-type-text">新增友链</span>
+                </label>
+                <label class="link-type-label flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-2 text-xs font-medium text-black/70 transition hover:ring-2 hover:ring-(--primary) [&:has(input:checked)]:bg-(--primary) [&:has(input:checked)]:text-white [&:has(input:checked)]:font-bold [&:has(input:checked)>.link-type-icon]:!text-white">
+                  <input type="radio" name="type" value="update" class="sr-only" />
+                  <span class="link-type-icon icon-[material-symbols--edit-rounded]"></span>
+                  <span class="link-type-text">更新友链</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 网站名称 + 网站地址 -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="displayName" class="mb-1 block text-sm font-medium text-90">
+                  网站名称 <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="displayName"
+                  name="displayName"
+                  required
+placeholder="网站名称"
+                class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                />
+              </div>
+              <div>
+                <label for="url" class="mb-1 block text-sm font-medium text-90">
+                  网站地址 <span class="text-red-500">*</span>
+                </label>
+                <input
+                  type="url"
+                  id="url"
+                  name="url"
+                  required
+placeholder="https://"
+                class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                />
+              </div>
+            </div>
+
+            <!-- 网站Logo + 邮箱 -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="logo" class="mb-1 block text-sm font-medium text-90">网站Logo</label>
+                <input
+                  type="url"
+                  id="logo"
+                  name="logo"
+                  placeholder="图片链接"
+                  class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                />
+              </div>
+              <div>
+                <label for="email" class="mb-1 block text-sm font-medium text-90">邮箱</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="用于通知"
+                  class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                />
+              </div>
+            </div>
+
+            <!-- 网站描述 -->
+            <div>
+              <label for="description" class="mb-1 block text-sm font-medium text-90">网站描述</label>
+              <textarea
+                id="description"
+                name="description"
+                rows="2"
+                placeholder="简单介绍一下您的网站"
+                class="w-full resize-none rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+              ></textarea>
+            </div>
+
+            <!-- 分组 + RSS链接 -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="groupName" class="mb-1 block text-sm font-medium text-90">分组</label>
+                <select
+                  id="groupName"
+                  name="groupName"
+                  class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                >
+                  <option value="">默认分组</option>
+                </select>
+              </div>
+              <div>
+                <label for="rssUrl" class="mb-1 block text-sm font-medium text-90">RSS订阅</label>
+                <input
+                  type="url"
+                  id="rssUrl"
+                  name="rssUrl"
+placeholder="RSS链接"
+                class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                />
+              </div>
+            </div>
+
+            <!-- 更新描述 -->
+            <div id="update-description-wrapper" class="hidden">
+              <label for="updateDescription" class="mb-1 block text-sm font-medium text-90">更新说明</label>
+              <textarea
+                id="updateDescription"
+                name="updateDescription"
+                rows="2"
+                placeholder="请说明本次更新的内容"
+                class="w-full resize-none rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+              ></textarea>
+            </div>
+
+            <!-- 提交按钮 -->
+            <div class="pt-1">
+              <button
+                type="submit"
+                id="submit-link-btn"
+                class="btn-regular w-full justify-center rounded-lg px-4 py-2.5 text-sm font-bold active:scale-[0.98] transition"
+              >
+                <span id="submit-btn-text">提交申请</span>
+                <span id="submit-btn-loading" class="hidden items-center justify-center">
+                  <svg class="animate-spin mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  提交中...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+
+    <!-- 友链提交表单脚本 -->
+    <script is:inline>
+      (function() {
+        // 获取分组列表
+        async function fetchGroups() {
+          try {
+            const response = await fetch('/apis/anonymous.link.submit.kunkunyu.com/v1alpha1/linkgroups');
+            if (response.ok) {
+              const data = await response.json();
+              const select = document.getElementById('groupName');
+              
+              // 处理不同的返回格式
+              let groups = [];
+              if (Array.isArray(data)) {
+                groups = data;
+              } else if (data.items) {
+                groups = data.items;
+              } else if (data.spec) {
+                groups = [data];
+              }
+              
+              if (select && groups.length > 0) {
+                // 移除默认选项
+                var defaultOption = select.querySelector('option[value=""]');
+                if (defaultOption) defaultOption.remove();
+                
+                groups.forEach(function(item) {
+                  var option = document.createElement('option');
+                  option.value = item.spec?.displayName || item.displayName || item.name || '';
+                  option.textContent = item.spec?.displayName || item.displayName || item.name || '';
+                  if (option.value) {
+                    select.appendChild(option);
+                  }
+                });
+              }
+            }
+          } catch (e) {
+            // 获取分组失败，静默使用默认分组
+          }
+        }
+
+        // 绑定事件
+        function initLinkSubmit() {
+          var form = document.getElementById('link-submit-form-actual');
+          var typeRadios = document.querySelectorAll('input[name="type"]');
+          var updateWrapper = document.getElementById('update-description-wrapper');
+
+          // 更新类型选择按钮样式
+          function updateTypeStyles() {
+            var typeLabels = form.querySelectorAll('.link-type-label');
+            typeLabels.forEach(function(label) {
+              var input = label.querySelector('input');
+              if (input && input.checked) {
+                // 选中状态
+                label.classList.add('bg-(--primary)', 'text-white', 'font-bold');
+                label.classList.remove('bg-white', 'text-black/70');
+              } else {
+                // 未选中状态
+                label.classList.remove('bg-(--primary)', 'text-white', 'font-bold');
+                label.classList.add('bg-white', 'text-black/70');
+              }
+            });
+          }
+
+          // 类型切换
+          typeRadios.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+              if (updateWrapper) {
+                updateWrapper.classList.toggle('hidden', this.value !== 'update');
+              }
+              updateTypeStyles();
+            });
+          });
+
+          // 初始化类型样式
+          updateTypeStyles();
+
+          // 表单提交
+          if (form) {
+            form.addEventListener('submit', async function(e) {
+              e.preventDefault();
+              
+              var submitBtn = document.getElementById('submit-link-btn');
+              var btnText = document.getElementById('submit-btn-text');
+              var btnLoading = document.getElementById('submit-btn-loading');
+              var successDiv = document.getElementById('link-submit-success');
+              
+              // 显示加载状态
+              submitBtn.disabled = true;
+              btnText.classList.add('hidden');
+              btnLoading.classList.remove('hidden');
+
+              var formData = new FormData(form);
+              var data = {
+                type: formData.get('type'),
+                displayName: formData.get('displayName'),
+                url: formData.get('url')
+              };
+
+              // 添加可选字段
+              if (formData.get('logo')) data.logo = formData.get('logo');
+              if (formData.get('email')) data.email = formData.get('email');
+              if (formData.get('description')) data.description = formData.get('description');
+              if (formData.get('groupName')) data.groupName = formData.get('groupName');
+              if (formData.get('rssUrl')) data.rssUrl = formData.get('rssUrl');
+              if (formData.get('updateDescription')) data.updateDescription = formData.get('updateDescription');
+
+              try {
+                var response = await fetch('/apis/anonymous.link.submit.kunkunyu.com/v1alpha1/linksubmits/-/submit', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                  // 成功 - 显示成功提示，隐藏表单
+                  form.classList.add('hidden');
+                  if (successDiv) {
+                    successDiv.classList.remove('hidden');
+                  }
+                } else {
+                  var errorData = await response.json().catch(function() { return {}; });
+                  alert('提交失败：' + (errorData.message || '请检查输入信息是否正确'));
+                }
+              } catch (err) {
+                alert('提交失败：网络错误，请稍后重试');
+              } finally {
+                submitBtn.disabled = false;
+                btnText.classList.remove('hidden');
+                btnLoading.classList.add('hidden');
+              }
+            });
+          }
+        }
+
+        // 初始化
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            initLinkSubmit();
+            fetchGroups();
+          });
+        } else {
+          initLinkSubmit();
+          fetchGroups();
+        }
+
+        // Swup 页面切换后重新初始化
+        document.addEventListener('swup:contentReplaced', function() {
+          setTimeout(function() {
+            initLinkSubmit();
+            fetchGroups();
+          }, 100);
+        });
+      })();
+    </script>
   </section>
 
   <!-- 评论区 -->
@@ -325,4 +643,5 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
       set:html={'<halo:comment group="plugin.halo.run" kind="Plugin" th:attr="name=${pluginName}" />'}
     />
   </div>
+
 </MainGridLayout>

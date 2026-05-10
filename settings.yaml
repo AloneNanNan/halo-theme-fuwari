@@ -338,7 +338,8 @@ spec:
         - $formkit: switch
           name: enable_apply_btn
           value: true
-          label: 显示申请友链按钮
+          label: 显示友链自助提交表单
+          help: "需要安装并启用「友链自助提交」插件"
         - $formkit: switch
           name: enable_owner_info
           value: true
