@@ -295,178 +295,180 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- 友链提交表单 - 折叠面板形式 -->
-    <div th:if="${pluginFinder.available('link-submit') && theme.config.links.enable_apply_btn}" class="collapse-item rounded-xl bg-(--btn-regular-bg) overflow-hidden mt-4">
-      <!-- 折叠头部 - 申请友链按钮 -->
-      <button
-        type="button"
-        class="collapse-header flex w-full items-center justify-between p-4 text-left transition"
-        data-collapse-target="link-submit-form"
-      >
-        <div class="flex items-center gap-2">
-          <span class="icon-[material-symbols--add-circle-outline-rounded] text-xl text-(--primary)"></span>
-          <span class="font-medium text-90">申请友链</span>
-        </div>
-        <span class="collapse-icon icon-[material-symbols--expand-more-rounded] text-xl text-50 transition-transform duration-200"></span>
-      </button>
-      
-      <!-- 折叠内容 - 表单 -->
-      <div
-        id="link-submit-form"
-        class="collapse-content hidden"
-      >
-        <div class="px-4 pb-4 -mt-2">
-          <!-- 成功提示 -->
-          <div id="link-submit-success" class="hidden text-center py-6 mb-4 bg-(--bg-secondary) rounded-lg">
-            <span class="icon-[material-symbols--check-circle-rounded] text-5xl text-green-500 mb-3 block mx-auto"></span>
-            <h3 class="text-base font-bold text-90 mb-1">提交成功！</h3>
-            <p class="text-sm text-50">您的友链申请已提交，管理员审核通过后即可显示。</p>
+      <!-- 友链提交表单 - 折叠面板形式 -->
+      <div th:if="${pluginFinder.available('link-submit') && theme.config.links.enable_apply_btn}" class="collapse-item rounded-xl bg-(--btn-regular-bg) overflow-hidden">
+        <!-- 折叠头部 - 申请友链按钮 -->
+        <button
+          type="button"
+          class="collapse-header flex w-full items-center justify-between p-4 text-left transition"
+          data-collapse-target="link-submit-form"
+        >
+          <div class="flex items-center gap-2">
+            <span class="icon-[material-symbols--add-circle-outline-rounded] text-xl text-(--primary)"></span>
+            <span class="font-medium text-90">申请友链</span>
           </div>
-
-          <!-- 表单 -->
-          <form id="link-submit-form-actual" class="space-y-3">
-            <!-- 类型选择 -->
-            <div>
-              <label class="mb-1.5 block text-sm font-medium text-90">申请类型</label>
-              <div class="flex gap-2">
-                <label class="link-type-label flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-(--primary) px-3 py-2 text-xs font-bold text-white transition hover:opacity-90">
-                  <input type="radio" name="type" value="add" checked class="sr-only" />
-                  <span class="link-type-icon icon-[material-symbols--add-circle-outline-rounded]"></span>
-                  <span class="link-type-text">新增友链</span>
-                </label>
-                <label class="link-type-label flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-2 text-xs font-medium text-black/70 transition [&:has(input:checked)]:bg-(--primary) [&:has(input:checked)]:text-white [&:has(input:checked)]:font-bold [&:has(input:checked)>.link-type-icon]:!text-white">
-                  <input type="radio" name="type" value="update" class="sr-only" />
-                  <span class="link-type-icon icon-[material-symbols--edit-rounded]"></span>
-                  <span class="link-type-text">更新友链</span>
-                </label>
-              </div>
+          <span class="collapse-icon icon-[material-symbols--expand-more-rounded] text-xl text-50 transition-transform duration-200"></span>
+        </button>
+        
+        <!-- 折叠内容 - 表单 -->
+        <div
+          id="link-submit-form"
+          class="collapse-content hidden"
+        >
+          <div class="px-4 pb-4 -mt-2">
+            <!-- 成功提示 -->
+            <div id="link-submit-success" class="hidden text-center py-6 mb-4 bg-(--bg-secondary) rounded-lg">
+              <span class="icon-[material-symbols--check-circle-rounded] text-5xl text-green-500 mb-3 block mx-auto"></span>
+              <h3 class="text-base font-bold text-90 mb-1">提交成功！</h3>
+              <p class="text-sm text-50">您的友链申请已提交，管理员审核通过后即可显示。</p>
             </div>
 
-            <!-- 网站名称 + 网站地址 -->
-            <div class="grid grid-cols-2 gap-3">
+            <!-- 表单 -->
+            <form id="link-submit-form-actual" class="space-y-3">
+              <!-- 类型选择 -->
               <div>
-                <label for="displayName" class="mb-1 block text-sm font-medium text-90">
-                  网站名称 <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="displayName"
-                  name="displayName"
-                  required
-placeholder="网站名称"
-                class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
-                />
+                <label class="mb-1.5 block text-sm font-medium text-90">申请类型</label>
+                <div class="flex gap-2">
+                  <label class="link-type-label flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-(--primary) px-3 py-2 text-xs font-bold text-white transition hover:opacity-90">
+                    <input type="radio" name="type" value="add" checked class="sr-only" />
+                    <span class="link-type-icon icon-[material-symbols--add-circle-outline-rounded]"></span>
+                    <span class="link-type-text">新增友链</span>
+                  </label>
+                  <label class="link-type-label flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-2 text-xs font-medium text-black/70 transition [&:has(input:checked)]:bg-(--primary) [&:has(input:checked)]:text-white [&:has(input:checked)]:font-bold [&:has(input:checked)>.link-type-icon]:!text-white">
+                    <input type="radio" name="type" value="update" class="sr-only" />
+                    <span class="link-type-icon icon-[material-symbols--edit-rounded]"></span>
+                    <span class="link-type-text">更新友链</span>
+                  </label>
+                </div>
               </div>
-              <div>
-                <label for="url" class="mb-1 block text-sm font-medium text-90">
-                  网站地址 <span class="text-red-500">*</span>
-                </label>
-                <input
-                  type="url"
-                  id="url"
-                  name="url"
-                  required
-placeholder="https://"
-                class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
-                />
-              </div>
-            </div>
 
-            <!-- 网站Logo + 邮箱 -->
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label for="logo" class="mb-1 block text-sm font-medium text-90">网站Logo</label>
-                <input
-                  type="url"
-                  id="logo"
-                  name="logo"
-                  placeholder="图片链接"
-                  class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
-                />
+              <!-- 网站名称 + 网站地址 -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="displayName" class="mb-1 block text-sm font-medium text-90">
+                    网站名称 <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="displayName"
+                    name="displayName"
+                    required
+                    placeholder="网站名称"
+                    class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                  />
+                </div>
+                <div>
+                  <label for="url" class="mb-1 block text-sm font-medium text-90">
+                    网站地址 <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="url"
+                    id="url"
+                    name="url"
+                    required
+                    placeholder="https://"
+                    class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                  />
+                </div>
               </div>
-              <div>
-                <label for="email" class="mb-1 block text-sm font-medium text-90">邮箱</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="用于通知"
-                  class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
-                />
+
+              <!-- 网站Logo + 邮箱 -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="logo" class="mb-1 block text-sm font-medium text-90">网站Logo</label>
+                  <input
+                    type="url"
+                    id="logo"
+                    name="logo"
+                    placeholder="图片链接"
+                    class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                  />
+                </div>
+                <div>
+                  <label for="email" class="mb-1 block text-sm font-medium text-90">邮箱</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="用于通知"
+                    class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                  />
+                </div>
               </div>
-            </div>
 
-            <!-- 网站描述 -->
-            <div>
-              <label for="description" class="mb-1 block text-sm font-medium text-90">网站描述</label>
-              <textarea
-                id="description"
-                name="description"
-                rows="2"
-                placeholder="简单介绍一下您的网站"
-                class="w-full resize-none rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
-              ></textarea>
-            </div>
-
-            <!-- 分组 + RSS链接 -->
-            <div class="grid grid-cols-2 gap-3">
+              <!-- 网站描述 -->
               <div>
-                <label for="groupName" class="mb-1 block text-sm font-medium text-90">分组</label>
-                <select
-                  id="groupName"
-                  name="groupName"
-                  class="w-full h-10 rounded-lg bg-white px-3 py-2 text-sm text-black/90 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                <label for="description" class="mb-1 block text-sm font-medium text-90">网站描述</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="2"
+                  placeholder="简单介绍一下您的网站"
+                  class="w-full resize-none rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                ></textarea>
+              </div>
+
+              <!-- 分组 + RSS链接 -->
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label for="groupName" class="mb-1 block text-sm font-medium text-90">分组</label>
+                  <select
+                    id="groupName"
+                    name="groupName"
+                    class="w-full h-10 rounded-lg bg-white px-3 py-2 text-sm text-black/90 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                  >
+                    <option value="">默认分组</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="rssUrl" class="mb-1 block text-sm font-medium text-90">RSS订阅</label>
+                  <input
+                    type="url"
+                    id="rssUrl"
+                    name="rssUrl"
+                    placeholder="RSS链接"
+                    class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                  />
+                </div>
+              </div>
+
+              <!-- 更新描述 -->
+              <div id="update-description-wrapper" class="hidden">
+                <label for="updateDescription" class="mb-1 block text-sm font-medium text-90">更新说明</label>
+                <textarea
+                  id="updateDescription"
+                  name="updateDescription"
+                  rows="2"
+                  placeholder="请说明本次更新的内容"
+                  class="w-full resize-none rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
+                ></textarea>
+              </div>
+
+              <!-- 提交按钮 -->
+              <div class="pt-1 flex justify-center">
+                <button
+                  type="submit"
+                  id="submit-link-btn"
+                  class="inline-flex items-center justify-center rounded-lg bg-(--primary) px-8 py-2.5 text-sm font-bold text-white active:scale-[0.98] transition hover:opacity-90"
                 >
-                  <option value="">默认分组</option>
-                </select>
+                  <span id="submit-btn-text">提交申请</span>
+                  <span id="submit-btn-loading" class="hidden items-center justify-center">
+                    <svg class="animate-spin mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    提交中...
+                  </span>
+                </button>
               </div>
-              <div>
-                <label for="rssUrl" class="mb-1 block text-sm font-medium text-90">RSS订阅</label>
-                <input
-                  type="url"
-                  id="rssUrl"
-                  name="rssUrl"
-placeholder="RSS链接"
-                class="w-full rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
-                />
-              </div>
-            </div>
-
-            <!-- 更新描述 -->
-            <div id="update-description-wrapper" class="hidden">
-              <label for="updateDescription" class="mb-1 block text-sm font-medium text-90">更新说明</label>
-              <textarea
-                id="updateDescription"
-                name="updateDescription"
-                rows="2"
-                placeholder="请说明本次更新的内容"
-                class="w-full resize-none rounded-lg bg-white px-3 py-2 text-sm text-black/90 placeholder:text-black/30 focus:ring-2 focus:ring-(--primary) focus:outline-none transition"
-              ></textarea>
-            </div>
-
-            <!-- 提交按钮 -->
-            <div class="pt-1 flex justify-center">
-              <button
-                type="submit"
-                id="submit-link-btn"
-                class="inline-flex items-center justify-center rounded-lg bg-(--primary) px-8 py-2.5 text-sm font-bold text-white active:scale-[0.98] transition hover:opacity-90"
-              >
-                <span id="submit-btn-text">提交申请</span>
-                <span id="submit-btn-loading" class="hidden items-center justify-center">
-                  <svg class="animate-spin mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  提交中...
-                </span>
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+
+
 
     <!-- 友链提交表单脚本 -->
     <script is:inline>
