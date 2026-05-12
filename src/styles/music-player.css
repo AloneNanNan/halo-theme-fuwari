@@ -9,8 +9,7 @@
 
 .firefly-music-player .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in oklab, var(--primary) 45%, transparent)
-    transparent;
+  scrollbar-color: var(--primary) transparent;
 }
 
 .firefly-music-player .custom-scrollbar::-webkit-scrollbar {
@@ -23,7 +22,7 @@
 
 .firefly-music-player .custom-scrollbar::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: color-mix(in oklab, var(--primary) 45%, transparent);
+  background: var(--primary);
 }
 
 .firefly-music-player .progress-thumb {
