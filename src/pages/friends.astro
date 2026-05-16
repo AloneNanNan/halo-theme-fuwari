@@ -24,7 +24,7 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
 
     <!-- 使用 /friends 路由提供的 friends 变量 -->
     <div th:if="${not #lists.isEmpty(friends.items)}" class="friends-list grid gap-4 sm:grid-cols-2 onload-animation">
-      <article th:each="friend : ${friends.items}" class="rounded-xl bg-(--btn-regular-bg) p-4 transition hover:bg-(--btn-regular-bg-hover)">
+      <article th:each="friend : ${friends.items}" class="btn-card items-start! justify-start! min-h-24 rounded-xl p-4">
         <div class="flex items-start gap-3">
           <!-- 头像 -->
           <div class="relative shrink-0">
