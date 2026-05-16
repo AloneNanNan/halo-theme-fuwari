@@ -84,6 +84,18 @@ const className = Astro.props.class;
 
     <div class="flex items-center">
       <Search client:only="svelte" />
+      <button
+        th:unless="${theme.config.base.themeColor.fixed}"
+        th:aria-label="#{nav.displaySettings}"
+        aria-label="Display Settings"
+        class="btn-plain scale-animation h-11 w-11 rounded-lg active:scale-90"
+        id="display-settings-switch"
+        type="button"
+        onclick="toggleNavbarPanel('display-setting')"
+      >
+        <span class="icon-[material-symbols--palette-outline] text-[1.25rem]"
+        ></span>
+      </button>
       <LightDarkSwitch client:only="svelte" />
       <button
         th:aria-label="#{nav.menu}"
@@ -96,18 +108,6 @@ const className = Astro.props.class;
         onclick="toggleNavbarPanel('nav-menu-panel')"
       >
         <span class="icon-[material-symbols--menu-rounded] text-[1.25rem]"
-        ></span>
-      </button>
-      <button
-        th:unless="${theme.config.base.themeColor.fixed}"
-        th:aria-label="#{nav.displaySettings}"
-        aria-label="Display Settings"
-        class="btn-plain scale-animation h-11 w-11 rounded-lg active:scale-90"
-        id="display-settings-switch"
-        type="button"
-        onclick="toggleNavbarPanel('display-setting')"
-      >
-        <span class="icon-[material-symbols--palette-outline] text-[1.25rem]"
         ></span>
       </button>
     </div>

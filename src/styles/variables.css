@@ -8,34 +8,35 @@
   --bannerOffset: 15vh;
   --post-card-cover-width: 28%;
 
-  --primary: hsl(var(--hue), 70%, 55%);
-  --page-bg: hsl(var(--hue), 15%, 96%);
+  /* ---------- hex fallback (for browsers without oklch support) ---------- */
+  --primary: #8b5cf6;
+  --page-bg: #f1f0f8;
   --card-bg: white;
-  --btn-content: hsl(var(--hue), 60%, 45%);
-  --btn-regular-bg: hsl(var(--hue), 25%, 94%);
-  --btn-regular-bg-hover: hsl(var(--hue), 35%, 88%);
-  --btn-regular-bg-active: hsl(var(--hue), 45%, 82%);
-  --btn-plain-bg-hover: hsl(var(--hue), 25%, 94%);
-  --btn-plain-bg-active: hsl(var(--hue), 10%, 97%);
-  --btn-card-bg-hover: hsl(var(--hue), 8%, 97%);
-  --btn-card-bg-active: hsl(var(--hue), 25%, 88%);
+  --btn-content: #6d5ae6;
+  --btn-regular-bg: #eceafb;
+  --btn-regular-bg-hover: #ddd8fa;
+  --btn-regular-bg-active: #cdc4f8;
+  --btn-plain-bg-hover: #eceafb;
+  --btn-plain-bg-active: #f3f2fb;
+  --btn-card-bg-hover: #f7f6fc;
+  --btn-card-bg-active: #ddd8fa;
   --enter-btn-bg: var(--btn-regular-bg);
   --enter-btn-bg-hover: var(--btn-regular-bg-hover);
   --enter-btn-bg-active: var(--btn-regular-bg-active);
-  --deep-text: hsl(var(--hue), 8%, 25%);
-  --title-active: hsl(var(--hue), 55%, 50%);
+  --deep-text: #3e3e50;
+  --title-active: #7b66ec;
   --line-divider: rgba(0, 0, 0, 0.08);
   --line-color: rgba(0, 0, 0, 0.1);
   --meta-divider: rgba(0, 0, 0, 0.2);
   --inline-code-bg: var(--btn-regular-bg);
   --inline-code-color: var(--btn-content);
-  --selection-bg: hsl(var(--hue), 35%, 88%);
-  --codeblock-bg: hsl(var(--hue), 10%, 17%);
-  --codeblock-topbar-bg: hsl(var(--hue), 12%, 30%);
+  --selection-bg: #ddd8fa;
+  --codeblock-bg: #1e1e34;
+  --codeblock-topbar-bg: #3a3a56;
   --license-block-bg: rgba(0, 0, 0, 0.03);
-  --link-underline: hsl(var(--hue), 30%, 90%);
-  --link-hover: hsl(var(--hue), 25%, 94%);
-  --link-active: hsl(var(--hue), 35%, 88%);
+  --link-underline: #e7e1f9;
+  --link-hover: #eceafb;
+  --link-active: #ddd8fa;
   --float-panel-bg: white;
   --scrollbar-bg-light: rgba(0, 0, 0, 0.4);
   --scrollbar-bg-hover-light: rgba(0, 0, 0, 0.5);
@@ -48,68 +49,153 @@
   --scrollbar-bg-active: var(--scrollbar-bg-active-light);
   --color-selection-bar: linear-gradient(
     to right,
-    hsl(0, 70%, 55%),
-    hsl(30, 75%, 55%),
-    hsl(60, 75%, 55%),
-    hsl(120, 60%, 55%),
-    hsl(210, 70%, 55%),
-    hsl(270, 70%, 55%),
-    hsl(330, 70%, 55%)
+    #ff6b6b, #ffa94d, #ffd43b, #69db7c, #4dabf7, #9775fa, #f06595
   );
-  --toc-badge-bg: hsl(var(--hue), 35%, 85%);
-  --toc-btn-hover: hsl(var(--hue), 12%, 93%);
-  --toc-btn-active: hsl(var(--hue), 12%, 88%);
+  --toc-badge-bg: #d9d0f6;
+  --toc-btn-hover: #e4e0f4;
+  --toc-btn-active: #dbd7ee;
   --toc-width: calc((100vw - var(--page-width)) / 2 - 1rem);
 
-  --admonitions-color-tip: hsl(180, 65%, 55%);
-  --admonitions-color-note: hsl(250, 70%, 55%);
-  --admonitions-color-important: hsl(310, 65%, 55%);
-  --admonitions-color-warning: hsl(60, 75%, 55%);
-  --admonitions-color-caution: hsl(25, 75%, 55%);
+  --admonitions-color-tip: #34d399;
+  --admonitions-color-note: #818cf8;
+  --admonitions-color-important: #c084fc;
+  --admonitions-color-warning: #fbbf24;
+  --admonitions-color-caution: #f87171;
+}
+
+/* Modern browsers: use original oklch values for exact color matching */
+@supports (color: oklch(0 0 0)) {
+  :root {
+    --primary: oklch(0.7 0.14 var(--hue));
+    --page-bg: oklch(0.95 0.01 var(--hue));
+    --btn-content: oklch(0.55 0.12 var(--hue));
+    --btn-regular-bg: oklch(0.95 0.025 var(--hue));
+    --btn-regular-bg-hover: oklch(0.9 0.05 var(--hue));
+    --btn-regular-bg-active: oklch(0.85 0.08 var(--hue));
+    --btn-plain-bg-hover: oklch(0.95 0.025 var(--hue));
+    --btn-plain-bg-active: oklch(0.98 0.01 var(--hue));
+    --btn-card-bg-hover: oklch(0.98 0.005 var(--hue));
+    --btn-card-bg-active: oklch(0.9 0.03 var(--hue));
+    --deep-text: oklch(0.25 0.02 var(--hue));
+    --title-active: oklch(0.6 0.1 var(--hue));
+    --selection-bg: oklch(0.9 0.05 var(--hue));
+    --codeblock-bg: oklch(0.17 0.015 var(--hue));
+    --codeblock-topbar-bg: oklch(0.3 0.02 var(--hue));
+    --link-underline: oklch(0.93 0.04 var(--hue));
+    --link-hover: oklch(0.95 0.025 var(--hue));
+    --link-active: oklch(0.9 0.05 var(--hue));
+    --color-selection-bar: linear-gradient(
+      to right,
+      oklch(0.8 0.1 0),
+      oklch(0.8 0.1 30),
+      oklch(0.8 0.1 60),
+      oklch(0.8 0.1 90),
+      oklch(0.8 0.1 120),
+      oklch(0.8 0.1 150),
+      oklch(0.8 0.1 180),
+      oklch(0.8 0.1 210),
+      oklch(0.8 0.1 240),
+      oklch(0.8 0.1 270),
+      oklch(0.8 0.1 300),
+      oklch(0.8 0.1 330),
+      oklch(0.8 0.1 360)
+    );
+    --toc-badge-bg: oklch(0.89 0.05 var(--hue));
+    --toc-btn-hover: oklch(0.926 0.015 var(--hue));
+    --toc-btn-active: oklch(0.9 0.015 var(--hue));
+
+    --admonitions-color-tip: oklch(0.7 0.14 180);
+    --admonitions-color-note: oklch(0.7 0.14 250);
+    --admonitions-color-important: oklch(0.7 0.14 310);
+    --admonitions-color-warning: oklch(0.7 0.14 60);
+    --admonitions-color-caution: oklch(0.6 0.2 25);
+  }
 }
 
 :root.dark {
-  --primary: hsl(var(--hue), 70%, 65%);
-  --page-bg: hsl(var(--hue), 12%, 16%);
-  --card-bg: hsl(var(--hue), 12%, 22%);
-  --btn-content: hsl(var(--hue), 60%, 55%);
-  --btn-regular-bg: hsl(var(--hue), 15%, 32%);
-  --btn-regular-bg-hover: hsl(var(--hue), 16%, 36%);
-  --btn-regular-bg-active: hsl(var(--hue), 17%, 40%);
-  --btn-plain-bg-hover: hsl(var(--hue), 14%, 28%);
-  --btn-plain-bg-active: hsl(var(--hue), 12%, 25%);
-  --btn-card-bg-hover: hsl(var(--hue), 14%, 28%);
-  --btn-card-bg-active: hsl(var(--hue), 15%, 32%);
-  --deep-text: hsl(var(--hue), 20%, 80%);
+  /* ---------- hex fallback (for browsers without oklch support) ---------- */
+  --primary: #a78bfa;
+  --page-bg: #1c1c34;
+  --card-bg: #2a2a46;
+  --btn-content: #8f7cf0;
+  --btn-regular-bg: #3d3d5e;
+  --btn-regular-bg-hover: #4b4b6a;
+  --btn-regular-bg-active: #565676;
+  --btn-plain-bg-hover: #3b3b58;
+  --btn-plain-bg-active: #353550;
+  --btn-card-bg-hover: #3b3b58;
+  --btn-card-bg-active: #41415e;
+  --deep-text: #c0bfd6;
   --line-divider: rgba(255, 255, 255, 0.08);
   --line-color: rgba(255, 255, 255, 0.1);
   --meta-divider: rgba(255, 255, 255, 0.2);
-  --selection-bg: hsl(var(--hue), 35%, 40%);
+  --selection-bg: #4e4e7a;
   --license-block-bg: var(--codeblock-bg);
-  --link-underline: hsl(var(--hue), 30%, 35%);
-  --link-hover: hsl(var(--hue), 30%, 40%);
-  --link-active: hsl(var(--hue), 28%, 32%);
-  --float-panel-bg: hsl(var(--hue), 10%, 20%);
+  --link-underline: #4e4e7a;
+  --link-hover: #4e4e7a;
+  --link-active: #46467a;
+  --float-panel-bg: #22223e;
   --scrollbar-bg: var(--scrollbar-bg-dark);
   --scrollbar-bg-hover: var(--scrollbar-bg-hover-dark);
   --scrollbar-bg-active: var(--scrollbar-bg-active-dark);
   --color-selection-bar: linear-gradient(
     to right,
-    hsl(0, 70%, 55%),
-    hsl(30, 75%, 55%),
-    hsl(60, 75%, 55%),
-    hsl(120, 60%, 55%),
-    hsl(210, 70%, 55%),
-    hsl(270, 70%, 55%),
-    hsl(330, 70%, 55%)
+    #ff8787, #ffc078, #ffe066, #8ce99a, #74c0fc, #b197fc, #f783ac
   );
   --toc-badge-bg: var(--btn-regular-bg);
-  --toc-btn-hover: hsl(var(--hue), 12%, 22%);
-  --toc-btn-active: hsl(var(--hue), 12%, 26%);
+  --toc-btn-hover: #2d2d48;
+  --toc-btn-active: #353550;
 
-  --admonitions-color-tip: hsl(180, 65%, 60%);
-  --admonitions-color-note: hsl(250, 70%, 60%);
-  --admonitions-color-important: hsl(310, 65%, 60%);
-  --admonitions-color-warning: hsl(60, 75%, 60%);
-  --admonitions-color-caution: hsl(25, 75%, 60%);
+  --admonitions-color-tip: #34d399;
+  --admonitions-color-note: #818cf8;
+  --admonitions-color-important: #c084fc;
+  --admonitions-color-warning: #fbbf24;
+  --admonitions-color-caution: #f87171;
+}
+
+/* Modern browsers in dark mode: use original oklch values */
+@supports (color: oklch(0 0 0)) {
+  :root.dark {
+    --primary: oklch(0.75 0.14 var(--hue));
+    --page-bg: oklch(0.16 0.014 var(--hue));
+    --card-bg: oklch(0.23 0.015 var(--hue));
+    --btn-content: oklch(0.75 0.1 var(--hue));
+    --btn-regular-bg: oklch(0.33 0.035 var(--hue));
+    --btn-regular-bg-hover: oklch(0.38 0.04 var(--hue));
+    --btn-regular-bg-active: oklch(0.43 0.045 var(--hue));
+    --btn-plain-bg-hover: oklch(0.3 0.035 var(--hue));
+    --btn-plain-bg-active: oklch(0.27 0.025 var(--hue));
+    --btn-card-bg-hover: oklch(0.3 0.03 var(--hue));
+    --btn-card-bg-active: oklch(0.35 0.035 var(--hue));
+    --deep-text: oklch(0.25 0.02 var(--hue));
+    --selection-bg: oklch(0.4 0.08 var(--hue));
+    --link-underline: oklch(0.4 0.08 var(--hue));
+    --link-hover: oklch(0.4 0.08 var(--hue));
+    --link-active: oklch(0.35 0.07 var(--hue));
+    --float-panel-bg: oklch(0.19 0.015 var(--hue));
+    --color-selection-bar: linear-gradient(
+      to right,
+      oklch(0.7 0.1 0),
+      oklch(0.7 0.1 30),
+      oklch(0.7 0.1 60),
+      oklch(0.7 0.1 90),
+      oklch(0.7 0.1 120),
+      oklch(0.7 0.1 150),
+      oklch(0.7 0.1 180),
+      oklch(0.7 0.1 210),
+      oklch(0.7 0.1 240),
+      oklch(0.7 0.1 270),
+      oklch(0.7 0.1 300),
+      oklch(0.7 0.1 330),
+      oklch(0.7 0.1 360)
+    );
+    --toc-btn-hover: oklch(0.22 0.02 var(--hue));
+    --toc-btn-active: oklch(0.25 0.02 var(--hue));
+
+    --admonitions-color-tip: oklch(0.75 0.14 180);
+    --admonitions-color-note: oklch(0.75 0.14 250);
+    --admonitions-color-important: oklch(0.75 0.14 310);
+    --admonitions-color-warning: oklch(0.75 0.14 60);
+    --admonitions-color-caution: oklch(0.65 0.2 25);
+  }
 }
