@@ -498,8 +498,9 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
                 
                 groups.forEach(function(item) {
                   var option = document.createElement('option');
-                  option.value = item.spec?.displayName || item.displayName || item.name || '';
+                  option.value = item.metadata?.name || item.spec?.displayName || item.displayName || item.name || '';
                   option.textContent = item.spec?.displayName || item.displayName || item.name || '';
+                  option.dataset.groupName = item.spec?.displayName || item.displayName || item.name || '';
                   if (option.value) {
                     select.appendChild(option);
                   }
