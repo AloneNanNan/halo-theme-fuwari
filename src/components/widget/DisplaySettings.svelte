@@ -42,7 +42,7 @@
       </div>
     </div>
   </div>
-  <div class="w-full h-6 px-1 bg-(--btn-regular-bg) rounded select-none">
+  <div class="w-full h-6 px-1 bg-[hsl(0,18%,80%)] dark:bg-[hsl(0,18%,68%)] rounded select-none">
     <input aria-label="11" type="range" min="0" max="360" bind:value={hue}
            class="slider" id="colorSlider" step="5" style="width: 100%">
   </div>
