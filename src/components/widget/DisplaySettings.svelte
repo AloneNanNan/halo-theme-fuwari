@@ -42,7 +42,7 @@
       </div>
     </div>
   </div>
-  <div class="w-full h-6 px-1 bg-[#d9cfcf] dark:bg-[#bab0b0] rounded select-none">
+  <div class="w-full h-6 rounded select-none overflow-hidden">
     <input aria-label="11" type="range" min="0" max="360" bind:value={hue}
            class="slider" id="colorSlider" step="5" style="width: 100%">
   </div>
