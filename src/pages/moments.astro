@@ -145,7 +145,7 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
                     th:src="${momentItem.url}"
                     alt=""
                     loading="lazy"
-                    class="h-full w-full cursor-zoom-in object-cover transition duration-300 group-hover:scale-105"
+                    class="cursor-zoom-in transition duration-300 group-hover:scale-105"
                   />
                   <span
                     th:if="${#lists.size(content.medium) == 1}"
@@ -259,27 +259,37 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
     }
 
     .moment-media-item {
-      aspect-ratio: 1 / 1;
       grid-column: span 2;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      background: var(--btn-regular-bg);
+    }
+
+    .moment-media-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: var(--btn-regular-bg);
     }
 
     .moment-media-count-1 {
-      max-width: min(100%, 26rem);
+      max-width: min(100%, 30rem);
     }
 
     .moment-media-count-1 .moment-media-item {
-      aspect-ratio: 4 / 5;
       grid-column: 1 / -1;
+    }
+
+    .moment-media-count-1 .moment-media-item img {
+      max-height: 75vh;
     }
 
     .moment-media-count-2 .moment-media-item,
     .moment-media-count-4 .moment-media-item {
-      aspect-ratio: 4 / 3;
       grid-column: span 3;
     }
 
     .moment-media-count-5 .moment-media-item-wide {
-      aspect-ratio: 4 / 3;
       grid-column: span 3;
     }
 
