@@ -100,7 +100,7 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
         class="btn-regular h-11 rounded-lg px-5 text-sm font-bold active:scale-95"
       >
         <span class="icon-[material-symbols--chevron-left-rounded] mr-1 text-xl"></span>
-        <span th:text="#{common.prev}">上一页</span>
+        <span th:text="#{pagination.previous}">上一页</span>
       </a>
       <span class="flex h-11 items-center px-4 text-sm text-50">
         <span th:text="${friends.page}"></span>
@@ -112,7 +112,7 @@ import MainGridLayout from "../layouts/MainGridLayout.astro";
         th:href="@{${friends.nextUrl}}"
         class="btn-regular h-11 rounded-lg px-5 text-sm font-bold active:scale-95"
       >
-        <span th:text="#{common.next}">下一页</span>
+        <span th:text="#{pagination.next}">下一页</span>
         <span class="icon-[material-symbols--chevron-right-rounded] ml-1 text-xl"></span>
       </a>
     </div>
