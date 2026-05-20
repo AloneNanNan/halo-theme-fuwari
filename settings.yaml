@@ -103,6 +103,12 @@ spec:
           name: enable_change_color_scheme
           label: 允许访客切换配色
           value: true
+
+        - $formkit: switch
+          name: navbar_blur
+          label: 导航栏磨砂透明效果
+          value: false
+          help: "启用后导航栏变为半透明磨砂玻璃效果"
     - group: sidebar
       label: 侧边栏
       formSchema:

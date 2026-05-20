@@ -153,4 +153,13 @@
   .link-underline:active {
     text-decoration-color: var(--link-active);
   }
+
+  .navbar-blur {
+    transition: none !important;
+    background-color: rgb(255 255 255 / 0.75) !important;
+  }
+
+  :root.dark .navbar-blur {
+    background-color: rgb(0 0 0 / 0.55) !important;
+  }
 }

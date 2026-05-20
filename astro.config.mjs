@@ -50,7 +50,9 @@ export default defineConfig({
   ],
   vite: {
     plugins: [
-      tailwindcss(),
+      tailwindcss({
+        safelist: ["navbar-blur"],
+      }),
       Icons({
         compiler: "vue3",
       }),

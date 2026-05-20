@@ -8,13 +8,15 @@ const className = Astro.props.class;
 ---
 
 <div id="navbar" class="z-50 onload-animation">
-  <div class="absolute left-0 right-0 -top-8 h-8 bg-(--card-bg) transition">
+  <div class="absolute left-0 right-0 -top-8 h-8 bg-(--card-bg) transition"
+    th:classappend="${theme.config.style.navbar_blur} ? 'navbar-blur backdrop-blur-lg' : ''">
   </div>
   <div
     class:list={[
       className,
       "card-base !overflow-visible mx-auto flex h-[4.5rem] max-w-(--page-width) items-center justify-between !rounded-t-none px-4",
     ]}
+    th:classappend="${theme.config.style.navbar_blur} ? 'navbar-blur backdrop-blur-lg' : ''"
   >
     <a
       th:href="@{/}"
