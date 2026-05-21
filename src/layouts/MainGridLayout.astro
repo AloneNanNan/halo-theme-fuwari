@@ -322,7 +322,7 @@ const mainPanelTop = `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEI
         initAll();
       });
     })();
-    // 波浪viewBox动画：path 3周期(0-4320)，循环24/16/10s
+    // 波浪viewBox动画：path 3周期(0-4320)，循环18/12/8s
     (function wavAnim() {
       var speeds = [18, 12, 8];
       function step() {
@@ -336,6 +336,15 @@ const mainPanelTop = `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEI
         requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
+      // Swup切换后立即同步viewBox，避免新SVG初始viewBox造成空细线
+      document.addEventListener('swup:contentReplaced', function() {
+        var t = performance.now() / 1000;
+        for (var i = 1; i <= 3; i++) {
+          var svg = document.getElementById('wave-svg-' + i);
+          if (!svg) continue;
+          svg.setAttribute('viewBox', ((t / speeds[i-1]) % 1) * 2880 + ' 0 1440 200');
+        }
+      });
     })();
   </script>
 </Layout>
