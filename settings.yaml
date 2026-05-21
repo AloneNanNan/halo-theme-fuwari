@@ -60,6 +60,11 @@ spec:
                   label: 顶部
                 - value: bottom
                   label: 底部
+            - $formkit: switch
+              name: wave
+              label: 底部波浪效果
+              value: true
+              help: "在 Banner 底部显示波浪过渡效果"
             - $formkit: group
               name: credit
               label: 版权信息
